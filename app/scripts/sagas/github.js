@@ -15,27 +15,29 @@ import { ActionTypes } from 'constants/index';
  *
  */
 export function* getRepos({ payload }) {
-  try {
-    const response = yield call(request, `https://api.github.com/search/repositories?q=${payload.query}&sort=stars`);
-    yield put({
-      type: ActionTypes.GITHUB_GET_REPOS_SUCCESS,
-      payload: { data: response.items },
-    });
-  }
-  catch (err) {
-    /* istanbul ignore next */
-    yield put({
-      type: ActionTypes.GITHUB_GET_REPOS_FAILURE,
-      payload: err,
-    });
-  }
+	try {
+		const response = yield call(request, `https://api.github.com/search/repositories?q=${payload.query}&sort=stars`);
+		console.log('response: ', response);
+		console.log('typeof response: ', typeof response);
+		yield put({
+			type: ActionTypes.GITHUB_GET_REPOS_SUCCESS,
+			payload: { data: response.items },
+		});
+	}
+	catch (err) {
+		/* istanbul ignore next */
+		yield put({
+			type: ActionTypes.GITHUB_GET_REPOS_FAILURE,
+			payload: err,
+		});
+	}
 }
 
 /**
  * GitHub Sagas
  */
 export default function* root() {
-  yield all([
-    takeLatest(ActionTypes.GITHUB_GET_REPOS_REQUEST, getRepos),
-  ]);
+	yield all([
+		takeLatest(ActionTypes.GITHUB_GET_REPOS_REQUEST, getRepos),
+	]);
 }

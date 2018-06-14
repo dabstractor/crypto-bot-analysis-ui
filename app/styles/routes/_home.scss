@@ -5,17 +5,17 @@
   overflow: hidden;
   position: relative;
 
-  &:before {
-    background: linear-gradient(to bottom, #000, #fff);
-    bottom: 0;
-    content: '';
-    left: 0;
-    opacity: 0.4;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: rotate(-20deg) scale(1.5) translate(0, 43%);
-  }
+  // &:before {
+  //   background: linear-gradient(to bottom, #000, #fff);
+  //   bottom: 0;
+  //   content: '';
+  //   left: 0;
+  //   opacity: 0.4;
+  //   position: absolute;
+  //   right: 0;
+  //   top: 0;
+  //   transform: rotate(-20deg) scale(1.5) translate(0, 43%);
+  // }
 
   .app__container {
     position: relative;

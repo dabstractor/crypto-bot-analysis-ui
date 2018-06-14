@@ -5,22 +5,22 @@
  */
 
 export class ServerError extends Error {
-  response: Object;
+	response: Object;
 
-  constructor(response: Object, ...params: any): Error {
-    super(...params);
+	constructor(response: Object, ...params: any): Error {
+		super(...params);
 
-    Error.captureStackTrace(this, ServerError);
+		Error.captureStackTrace(this, ServerError);
 
-    this.name = 'ServerError';
-    this.response = {};
+		this.name = 'ServerError';
+		this.response = {};
 
-    return this;
-  }
+		return this;
+	}
 }
 
 export function parseError(error: string): string {
-  return error || 'Something went wrong';
+	return error || 'Something went wrong';
 }
 
 /**
@@ -35,67 +35,71 @@ export function parseError(error: string): string {
  * @returns {Promise}
  */
 export function request(url: string, options: Object = {}): Promise<*> {
-  const config = {
-    method: 'GET',
-    ...options,
-  };
-  const errors = [];
+	const config = {
+		method: 'GET',
+		...options,
+	};
+	const errors = [];
 
-  if (!url) {
-    errors.push('url');
-  }
+	if (!url) {
+		errors.push('url');
+	}
 
-  if (!config.payload && (config.method !== 'GET' && config.method !== 'DELETE')) {
-    errors.push('payload');
-  }
+	if (!config.payload && (config.method !== 'GET' && config.method !== 'DELETE')) {
+		errors.push('payload');
+	}
 
-  if (errors.length) {
-    throw new Error(`Error! You must pass \`${errors.join('`, `')}\``);
-  }
+	if (errors.length) {
+		throw new Error(`Error! You must pass \`${errors.join('`, `')}\``);
+	}
 
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    ...config.headers,
-  };
+	const headers = {
+		Accept: 'application/json',
+		'Content-Type': 'application/json',
+		...config.headers,
+	};
 
-  const params: Object = {
-    headers,
-    method: config.method,
-  };
+	const params: Object = {
+		headers,
+		method: config.method,
+		mode: config.mode || 'cors',
+	};
 
-  if (params.method !== 'GET') {
-    params.body = JSON.stringify(config.payload);
-  }
+	if (params.method !== 'GET') {
+		params.body = config.payload;
+	}
+	
+	console.log('config.payload: ', config.payload);
+	console.log('params.body: ', params.body);
 
-  return fetch(url, params)
-    .then(async (response) => {
-      if (response.status > 299) {
-        const error: ServerError = new ServerError(response.statusText);
-        const contentType = response.headers.get('content-type');
+	return fetch(url, params)
+		.then(async (response) => {
+			if (response.status > 299) {
+				const error: ServerError = new ServerError(response.statusText);
+				const contentType = response.headers.get('content-type');
 
-        if (contentType && contentType.includes('application/json')) {
-          error.response = {
-            status: response.status,
-            data: await response.json(),
-          };
-        }
-        else {
-          error.response = {
-            status: response.status,
-            data: await response.text(),
-          };
-        }
+				if (contentType && contentType.includes('application/json')) {
+					error.response = {
+						status: response.status,
+						data: await response.json(),
+					};
+				}
+				else {
+					error.response = {
+						status: response.status,
+						data: await response.text(),
+					};
+				}
 
-        throw error;
-      }
-      else {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          return response.json();
-        }
+				throw error;
+			}
+			else {
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					return response.json();
+				}
 
-        return response.text();
-      }
-    });
+				return response.text();
+			}
+		});
 }

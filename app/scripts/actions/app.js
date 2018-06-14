@@ -17,10 +17,10 @@ export { go, goBack, push, replace };
  * @returns {Object}
  */
 export function hideAlert(id: string): Object {
-  return {
-    type: ActionTypes.HIDE_ALERT,
-    payload: { id },
-  };
+	return {
+		type: ActionTypes.HIDE_ALERT,
+		payload: { id },
+	};
 }
 
 /**
@@ -36,17 +36,17 @@ export function hideAlert(id: string): Object {
  * @returns {Object}
  */
 export function showAlert(message: string, options: Object): Object {
-  const timeout = options.type === 'error' ? 0 : 5;
+	const timeout = options.type === 'error' ? 0 : 5;
 
-  return {
-    type: ActionTypes.SHOW_ALERT,
-    payload: {
-      id: options.id || uuid(),
-      icon: options.icon,
-      message,
-      position: options.position || 'bottom-right',
-      type: options.type,
-      timeout: !isNaN(options.timeout) ? options.timeout : timeout,
-    },
-  };
+	return {
+		type: ActionTypes.SHOW_ALERT,
+		payload: {
+			id: options.id || uuid(),
+			icon: options.icon,
+			message,
+			position: options.position || 'bottom-right',
+			type: options.type,
+			timeout: !isNaN(options.timeout) ? options.timeout : timeout,
+		},
+	};
 }

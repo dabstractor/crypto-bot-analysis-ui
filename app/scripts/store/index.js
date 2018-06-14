@@ -11,50 +11,50 @@ import rootReducer from 'reducers';
 const sagaMiddleware = createSagaMiddleware();
 
 const reducer = persistReducer(
-  {
-    key: 'rrsb', // key is required
-    storage, // storage is now required
-    whitelist: ['app', 'user'],
-  },
-  combineReducers({
-    ...rootReducer,
-    router: routerReducer,
-  })
+	{
+		key: 'rrsb', // key is required
+		storage, // storage is now required
+		whitelist: ['app', 'user'],
+	},
+	combineReducers({
+		...rootReducer,
+		router: routerReducer,
+	})
 );
 
 
 const middleware = [
-  sagaMiddleware,
-  routerMiddleware(history),
+	sagaMiddleware,
+	routerMiddleware(history),
 ];
 
 /* istanbul ignore next */
 if (process.env.NODE_ENV === 'development') {
-  const { createLogger } = require('redux-logger');
+	const { createLogger } = require('redux-logger');
 
-  middleware.push(createLogger({ collapsed: true }));
+	middleware.push(createLogger({ collapsed: true }));
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 /* istanbul ignore next */
 const configStore = (initialState = {}) => {
-  const createStoreWithMiddleware = composeEnhancers(applyMiddleware(...middleware))(createStore);
+	const createStoreWithMiddleware = composeEnhancers(applyMiddleware(...middleware))(createStore);
 
-  const store = createStoreWithMiddleware(reducer, initialState);
+	const store = createStoreWithMiddleware(reducer, initialState);
 
-  sagaMiddleware.run(rootSaga);
+	sagaMiddleware.run(rootSaga);
 
-  if (module.hot) {
-    module.hot.accept('reducers', () => {
-      store.replaceReducer(require('reducers').default);
-    });
-  }
+	if (module.hot) {
+		module.hot.accept('reducers', () => {
+			store.replaceReducer(require('reducers').default);
+		});
+	}
 
-  return {
-    persistor: persistStore(store),
-    store,
-  };
+	return {
+		persistor: persistStore(store),
+		store,
+	};
 };
 
 const { store, persistor } = configStore();

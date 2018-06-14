@@ -13,7 +13,7 @@ import { ActionTypes } from 'constants/index';
  */
 export function getRepos(query: string): Object {
   return {
-    type: ActionTypes.GITHUB_GET_REPOS_REQUEST,
-    payload: { query },
+	type: ActionTypes.GITHUB_GET_REPOS_REQUEST,
+	payload: { query },
   };
 }

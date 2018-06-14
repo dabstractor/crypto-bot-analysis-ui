@@ -21,62 +21,62 @@ import Footer from 'components/Footer';
 import SystemAlerts from 'components/SystemAlerts';
 
 export class App extends React.Component {
-  static propTypes = {
-    app: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired,
-  };
+	static propTypes = {
+		app: PropTypes.object.isRequired,
+		dispatch: PropTypes.func.isRequired,
+		user: PropTypes.object.isRequired,
+	};
 
-  componentWillReceiveProps(nextProps) {
-    const { dispatch, user } = this.props;
-    const { user: nextUser } = nextProps;
+	componentWillReceiveProps(nextProps) {
+		const { dispatch, user } = this.props;
+		const { user: nextUser } = nextProps;
 
-    /* istanbul ignore else */
-    if (!user.isAuthenticated && nextUser.isAuthenticated) {
-      dispatch(showAlert('Hello! And welcome!', { type: 'success', icon: 'i-trophy' }));
-    }
-  }
+		/* istanbul ignore else */
+		if (!user.isAuthenticated && nextUser.isAuthenticated) {
+			dispatch(showAlert('Hello! And welcome!', { type: 'success', icon: 'i-trophy' }));
+		}
+	}
 
-  render() {
-    const { app, dispatch, user } = this.props;
+	render() {
+		const { app, dispatch, user } = this.props;
 
-    return (
-      <ConnectedRouter history={history}>
-        <div
-          className={cx('app', {
-            'app--private': user.isAuthenticated,
-          })}
-        >
-          <Helmet
-            defer={false}
-            htmlAttributes={{ lang: 'pt-br' }}
-            encodeSpecialCharacters={true}
-            defaultTitle={config.title}
-            titleTemplate={`%s | ${config.name}`}
-            titleAttributes={{ itemprop: 'name', lang: 'pt-br' }}
-          />
-          {user.isAuthenticated && <Header dispatch={dispatch} user={user} />}
-          <main className="app__main">
-            <Switch>
-              <RoutePublic isAuthenticated={user.isAuthenticated} path="/" exact component={Home} />
-              <RoutePrivate isAuthenticated={user.isAuthenticated} path="/private" component={Private} />
-              <Route component={NotFound} />
-            </Switch>
-          </main>
-          <Footer />
-          <SystemAlerts alerts={app.alerts} dispatch={dispatch} />
-        </div>
-      </ConnectedRouter>
-    );
-  }
+		return (
+			<ConnectedRouter history={history}>
+				<div
+					className={cx('app', {
+						'app--private': user.isAuthenticated,
+					})}
+				>
+					<Helmet
+						defer={false}
+						htmlAttributes={{ lang: 'pt-br' }}
+						encodeSpecialCharacters={true}
+						defaultTitle={config.title}
+						titleTemplate={`%s | ${config.name}`}
+						titleAttributes={{ itemprop: 'name', lang: 'pt-br' }}
+					/>
+					{user.isAuthenticated && <Header dispatch={dispatch} user={user} />}
+					<main className="app__main">
+						<Switch>
+							<RoutePublic isAuthenticated={user.isAuthenticated} path="/" exact component={Home} />
+							<RoutePrivate isAuthenticated={user.isAuthenticated} path="/private" component={Private} />
+							<Route component={NotFound} />
+						</Switch>
+					</main>
+					{/*<Footer />*/}
+					<SystemAlerts alerts={app.alerts} dispatch={dispatch} />
+				</div>
+			</ConnectedRouter>
+		);
+	}
 }
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
-  return {
-    app: state.app,
-    user: state.user,
-  };
+	return {
+		app: state.app,
+		user: state.user,
+	};
 }
 
 export default connect(mapStateToProps)(App);

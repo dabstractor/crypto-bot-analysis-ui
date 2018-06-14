@@ -2,27 +2,27 @@
 
 exports[`App should handle HIDE_ALERT 1`] = `
 Object {
-  "alerts": Array [],
+    "alerts": Array [],
 }
 `;
 
 exports[`App should handle SHOW_ALERT 1`] = `
 Object {
-  "alerts": Array [
-    Object {
-      "icon": undefined,
-      "id": "test",
-      "message": "HELLO",
-      "position": "bottom-right",
-      "timeout": 5,
-      "type": "success",
-    },
-  ],
+    "alerts": Array [
+        Object {
+            "icon": undefined,
+            "id": "test",
+            "message": "HELLO",
+            "position": "bottom-right",
+            "timeout": 5,
+            "type": "success",
+        },
+    ],
 }
 `;
 
 exports[`App should return the initial state 1`] = `
 Object {
-  "alerts": Array [],
+    "alerts": Array [],
 }
 `;
