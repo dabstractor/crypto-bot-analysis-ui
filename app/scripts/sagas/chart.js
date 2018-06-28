@@ -17,68 +17,68 @@ import backtestApi from '../apis/backtestApi';
  *
  */
 export function* getData({payload, immediate = false}) {
-	console.log('%cpayload: ', 'font-size: 24pt; color:green');
-	console.log( payload );
-	console.log('immediate: ', immediate);
-	console.log('%cimmediate: ', 'font-size: 24pt; color:red');
-	console.log( immediate );   
-	try {
-		const response = yield call(() => backtestApi.query(payload));
-		yield put({
-			type: ActionTypes.RETRIEVE_CHART_DATA_SUCCESS,
-			payload: response,
-		});
-	}
-	catch (err) {
-		/* istanbul ignore next */
-		yield put({
-			type: ActionTypes.RETRIEVE_CHART_DATA_FAILURE,
-			payload: err,
-		});
-	}
+    console.log('%cpayload: ', 'font-size: 24pt; color:green');
+    console.log( payload );
+    console.log('immediate: ', immediate);
+    console.log('%cimmediate: ', 'font-size: 24pt; color:red');
+    console.log( immediate );   
+    try {
+        const response = yield call(() => backtestApi.query(payload));
+        yield put({
+            type: ActionTypes.RETRIEVE_CHART_DATA_SUCCESS,
+            payload: response,
+        });
+    }
+    catch (err) {
+        /* istanbul ignore next */
+        yield put({
+            type: ActionTypes.RETRIEVE_CHART_DATA_FAILURE,
+            payload: err,
+        });
+    }
 }
 
 export function* getNext({payload}) {
-	try {
-		const response = yield call(backtestApi.getNext);
-		console.log('response: ', response);
-		yield put({
-			type: ActionTypes.RETRIEVE_NEXT_CHART_DATA_SUCCESS,
-			payload: response,
-		});
+    try {
+        const response = yield call(backtestApi.getNext);
+        console.log('response: ', response);
+        yield put({
+            type: ActionTypes.RETRIEVE_NEXT_CHART_DATA_SUCCESS,
+            payload: response,
+        });
 
-	} catch (err) {
-		yield put({
-			type: ActionTypes.RETRIEVE_NEXT_CHART_DATA_FAILURE,
-			payload: err,
-		});
-	}
+    } catch (err) {
+        yield put({
+            type: ActionTypes.RETRIEVE_NEXT_CHART_DATA_FAILURE,
+            payload: err,
+        });
+    }
 }
 
 export function* getInfo({query}) {
 
-	try {
-		const response = yield call(() => backtestApi.getInfo(query));
-		yield put({
-			type: ActionTypes.RETRIEVE_RESULTS_INFO_SUCCESS,
-			payload: response,
-		});
+    try {
+        const response = yield call(() => backtestApi.getInfo(query));
+        yield put({
+            type: ActionTypes.RETRIEVE_RESULTS_INFO_SUCCESS,
+            payload: response,
+        });
 
-	} catch (err) {
-		yield put({
-			type: ActionTypes.RETRIEVE_RESULTS_INFO_FAILURE,
-			payload: err,
-		})
-	}
+    } catch (err) {
+        yield put({
+            type: ActionTypes.RETRIEVE_RESULTS_INFO_FAILURE,
+            payload: err,
+        })
+    }
 }
 
 /**
  * GitHub Sagas
  */
 export default function* root() {
-	yield all([
-		takeLatest(ActionTypes.RETRIEVE_CHART_DATA, getData),
-		takeLatest(ActionTypes.RETRIEVE_NEXT_CHART_DATA, getNext),
-		takeLatest(ActionTypes.RETRIEVE_RESULTS_INFO, getInfo),
-	]);
+    yield all([
+        takeLatest(ActionTypes.RETRIEVE_CHART_DATA, getData),
+        takeLatest(ActionTypes.RETRIEVE_NEXT_CHART_DATA, getNext),
+        takeLatest(ActionTypes.RETRIEVE_RESULTS_INFO, getInfo),
+    ]);
 }
